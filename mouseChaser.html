@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Auto Path</title>
+    <style media="screen">
+      #destination {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        background-color: blue;
+        display: none;
+      }
+      
+      #startingLocation {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        background-color: red;
+        display: none;
+      }
+      
+      .path {
+        background-color: red;
+        width: 1px;
+        height: 1px;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="destination"></div>
+    <div id="startingLocation"></div>
+    <script type="text/javascript">
+      const PATH_WIDTH = '50px';
+      var lastDirection = '';
+      var path_segments = [];
+      var startingLocation = {
+        x: 0,
+        y: 0
+      }
+      
+      var destination = {
+        x: 0,
+        y: 0,
+      }
+      
+      var directions = {
+        top: false,
+        left: false,
+        bottom: false,
+        right: false
+      }
+      
+      //Get destination div
+      var destinationDIV = document.getElementById('destination');
+      var startingLocationDIV = document.getElementById('startingLocation');
+      
+      document.addEventListener('click', startTracking);
+      
+      function setStartingLocation(){
+        //SET STARTING POSITION
+        
+        //Assign random location for startingLocationDIV
+        startingLocationDIV.style.top = Math.floor(Math.random() * 100) + 1 + '%';
+        startingLocationDIV.style.left = Math.floor(Math.random() * 100) + 1 + '%';
+        
+        // Display startingLocationDIV
+        startingLocationDIV.style.display = 'block';
+
+        // Assign startingLocationDIV coordinates to startingLocation object
+        startingLocation.x = startingLocationDIV.offsetLeft;
+        startingLocation.y = startingLocationDIV.offsetTop;
+      }
+      
+      setStartingLocation();
+      
+      function startTracking(event) {
+        // console.log(event);
+        //SET DESTINATION POSITION
+        
+        // Save event coordinates to destination object
+        destination.x = event.pageX;
+        destination.y = event.pageY;
+        
+        // Assign location for destinationDIV
+        destinationDIV.style.top = destination.y + 'px';
+        destinationDIV.style.left = destination.x + 'px';
+        
+        // Display destinationDIV
+        destinationDIV.style.display = 'block';
+        
+        // Begin navigation function
+        navigate();
+      }
+      
+      function navigate() {
+        document.removeEventListener('click', startTracking);
+        document.addEventListener('mousemove', changePosition)
+        if (startingLocation.x == destination.x) {
+          
+        } else if (startingLocation.x < destination.x) {
+          moveRight();
+        } else if (startingLocation.x > destination.x) {
+          moveLeft();
+        }
+        
+        if (startingLocation.y == destination.y){
+          
+        } else if (startingLocation.y > destination.y) {
+          moveUp();
+        } else if (startingLocation.y < destination.y) {
+          moveDown();
+        }
+        
+        if (startingLocation.x == destination.x && startingLocation.y == destination.y) {
+          alert('Done');
+          return;
+        }
+        setTimeout(navigate, 10);
+      }
+      
+      function moveLeft() {
+        console.log('Move Left');
+        startingLocation.x -=  1;
+        console.log('Left Move' + startingLocation.x);
+        var newPath = document.createElement('div');
+        newPath.className = 'path';
+        newPath.style.left = startingLocation.x + 'px';
+        newPath.style.top = startingLocation.y + 'px';
+        document.body.appendChild(newPath);
+      }
+      
+      function moveRight() {
+        console.log('Move Right');
+        startingLocation.x +=  1;
+        console.log('Left Move' + startingLocation.x);
+        var newPath = document.createElement('div');
+        newPath.className = 'path';
+        newPath.style.left = startingLocation.x + 'px';
+        newPath.style.top = startingLocation.y + 'px';
+        document.body.appendChild(newPath);
+      }
+      
+      function moveUp() {
+        console.log('Move Up');
+        startingLocation.y -=  1;
+        console.log('Left Move' + startingLocation.x);
+        var newPath = document.createElement('div');
+        newPath.className = 'path';
+        newPath.style.left = startingLocation.x + 'px';
+        newPath.style.top = startingLocation.y + 'px';
+        document.body.appendChild(newPath);
+      }
+      
+      function moveDown() {
+        console.log('Move Down');
+        startingLocation.y +=  1;
+        console.log('Left Move' + startingLocation.x);
+        var newPath = document.createElement('div');
+        newPath.className = 'path';
+        newPath.style.left = startingLocation.x + 'px';
+        newPath.style.top = startingLocation.y + 'px';
+        document.body.appendChild(newPath);
+      }
+      
+      function changePosition(event) {
+        destination.x = event.pageX;
+        destination.y = event.pageY;
+        
+        // Assign location for destinationDIV
+        destinationDIV.style.top = destination.y + 'px';
+        destinationDIV.style.left = destination.x + 'px';
+      }
+    </script>
+  </body>
+</html>
